@@ -36,18 +36,6 @@ cp .env_sample .env
 docker-compose up -d --build
 ```
 
-### Применение миграций
-
-```bash
-docker-compose exec web python manage.py migrate
-```
-
-### Создание суперпользователя (опционально)
-
-```bash
-docker-compose exec web python manage.py createsuperuser
-```
-
 ### Доступ к приложению
 
 Откройте в браузере: http://localhost:9000/
@@ -87,18 +75,18 @@ Base URL: `http://localhost:9000/api/`
 curl -X GET "http://localhost:9000/api/orders/" -H "Accept: application/json"
 ```
 
-#### Поиск заказов по номеру стола или статусу
-
-```bash
-curl -X GET "http://localhost:9000/api/orders/?search=5" -H "Accept: application/json"
-```
-
 #### Создание нового заказа
 
 ```bash
 curl -X POST "http://localhost:9000/api/orders/" \
   -H "Content-Type: application/json" \
-  -d '{"table_number": 5, "items": [1, 2]}'
+  -d '{"table_number": 5, "item_ids": [1, 2]}'
+```
+
+#### Поиск заказов по номеру стола или статусу
+
+```bash
+curl -X GET "http://localhost:9000/api/orders/?search=5" -H "Accept: application/json"
 ```
 
 #### Получение заказа по ID
@@ -112,7 +100,7 @@ curl -X GET "http://localhost:9000/api/orders/1/" -H "Accept: application/json"
 ```bash
 curl -X PUT "http://localhost:9000/api/orders/1/" \
   -H "Content-Type: application/json" \
-  -d '{"table_number": 5, "items": [1, 3], "status": 2}'
+  -d '{"table_number": 5, "item_ids": [1, 3], "status": 2}'
 ```
 
 #### Частичное обновление заказа (PATCH)
