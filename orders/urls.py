@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import CreateOrder, DeleteOrder, OrderListView, OrderUpdateView, \
-    RevenueView
+    RevenueView, OrderEditView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -12,5 +12,5 @@ urlpatterns = [
     path("<int:pk>/update_status/", OrderUpdateView.as_view(),
          name="update_status"),
     path("revenue/", RevenueView.as_view(), name="order_revenue"),
-
+    path("<int:pk>/edit/", OrderEditView.as_view(), name="order_edit"),
 ]

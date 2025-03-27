@@ -13,3 +13,14 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['table_number', 'items']
+
+class OrderEditForm(forms.ModelForm):
+    items = forms.ModelMultipleChoiceField(
+        queryset=Items.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="Блюда"
+    )
+
+    class Meta:
+        model = Order
+        fields = ['table_number', 'items', 'status']

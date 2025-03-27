@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, \
     TemplateView
 
-from orders.forms import OrderForm
+from orders.forms import OrderForm, OrderEditForm
 from orders.models import Order, ChoiceStatus
 
 
@@ -60,6 +60,18 @@ class OrderUpdateView(UpdateView):
     template_name = 'orders/order_update.html'
     success_url = reverse_lazy('order_list')
 
+class OrderEditView(UpdateView):
+    model = Order
+    form_class = OrderEditForm
+    template_name = 'orders/order_update.html'
+    success_url = reverse_lazy('order_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # пересчёт total_price
+        self.object.total_price = self.object.calculate_total()
+        self.object.save()
+        return response
 
 class RevenueView(TemplateView):
     template_name = 'orders/revenue.html'

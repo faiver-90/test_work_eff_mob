@@ -75,8 +75,9 @@
           </form>
         </td>
         <td>
-          <a href="{% url 'delete_order' order.id %}" class="btn btn-sm btn-danger">Удалить</a>
-        </td>
+  <a href="{% url 'order_edit' order.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+  <a href="{% url 'delete_order' order.id %}" class="btn btn-sm btn-danger">Удалить</a>
+</td>
       </tr>
     {% empty %}
       <tr>
