@@ -20,22 +20,29 @@ class OrderSerializer(serializers.ModelSerializer):
     заказ.
     Поля total_price доступны только для чтения.
     """
-    items = serializers.PrimaryKeyRelatedField(
+    items = ItemSerializer(many=True, read_only=True)
+    item_ids = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Items.objects.all()
+        queryset=Items.objects.all(),
+        write_only=True
     )
 
     class Meta:
         model = Order
-        fields = ['id', 'table_number', 'items', 'total_price', 'status']
-        read_only_fields = ['total_price']
+        fields = ['id',
+                  'table_number',
+                  'items',
+                  'item_ids',
+                  'total_price',
+                  'status']
+        read_only_fields = ['total_price', 'items']
 
     def create(self, validated_data):
         """
         Создаёт новый заказ: устанавливает блюда, рассчитывает total_price и
         сохраняет объект.
         """
-        items = validated_data.pop('items')
+        items = validated_data.pop('item_ids')
         order = Order.objects.create(**validated_data)
         order.items.set(items)
         order.total_price = order.calculate_total()
@@ -47,6 +54,7 @@ class OrderSerializer(serializers.ModelSerializer):
         При обновлении заказа обновляет список блюд, если передан параметр
         items, затем вызывает стандартное поведение ModelSerializer.update().
         """
-        if 'items' in validated_data:
-            instance.items.set(validated_data.pop('items'))
+        if 'item_ids' in validated_data:
+            items = validated_data.pop('item_ids')
+            instance.items.set(items)
         return super().update(instance, validated_data)

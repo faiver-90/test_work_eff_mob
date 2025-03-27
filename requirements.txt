@@ -1,10 +1,16 @@
 annotated-types==0.7.0
 asgiref==3.8.1
+colorama==0.4.6
 Django==5.1.7
 djangorestframework==3.15.2
+iniconfig==2.1.0
+packaging==24.2
+pluggy==1.5.0
 psycopg2-binary==2.9.10
 pydantic==2.10.6
 pydantic_core==2.27.2
+pytest==8.3.5
+pytest-django==4.10.0
 python-dotenv==1.1.0
 sqlparse==0.5.3
 typing_extensions==4.13.0
