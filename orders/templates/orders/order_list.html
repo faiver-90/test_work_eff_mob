@@ -34,7 +34,18 @@
 
 <div class="container mt-5">
   <h2>Все заказы</h2>
-
+<div class="btn-group mb-3" role="group">
+  <a href="{% url 'order_list' %}"
+     class="btn {% if not selected_status %}btn-primary{% else %}btn-outline-primary{% endif %}">
+    Все
+  </a>
+  {% for key,label in statuses %}
+    <a href="{% url 'order_list' %}?status={{ key }}"
+       class="btn {% if selected_status|stringformat:"s" == key|stringformat:"s" %}btn-primary{% else %}btn-outline-primary{% endif %}">
+      {{ label }}
+    </a>
+  {% endfor %}
+</div>
   <table class="table table-bordered table-striped mt-4 align-middle">
     <thead>
       <tr>
