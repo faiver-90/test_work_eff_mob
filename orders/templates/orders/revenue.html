@@ -8,7 +8,9 @@
 <body class="p-5">
   <div class="container">
     <h2 class="mb-4 text-center">Общая выручка (статус «оплачено»)</h2>
-
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
     <div class="alert alert-success text-center">
       <strong>Итого:</strong> {{ total_revenue }} ₽
     </div>
@@ -33,6 +35,7 @@
         {% empty %}
           <tr><td colspan="4" class="text-center">Нет оплаченных заказов</td></tr>
         {% endfor %}
+
       </tbody>
     </table>
 
