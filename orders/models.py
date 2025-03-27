@@ -24,6 +24,7 @@ class Order(models.Model):
                                       blank=True)
     status = models.IntegerField(choices=ChoiceStatus.choices,
                                  default=ChoiceStatus.WAITING)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     STATUS_CHOICES = ChoiceStatus.choices
 

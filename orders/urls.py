@@ -1,7 +1,8 @@
 from django.urls import path
 
 from . import views
-from .views import CreateOrder, DeleteOrder, OrderListView, OrderUpdateView
+from .views import CreateOrder, DeleteOrder, OrderListView, OrderUpdateView, \
+    RevenueView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -10,5 +11,6 @@ urlpatterns = [
     path("orders/", OrderListView.as_view(), name="order_list"),
     path("<int:pk>/update_status/", OrderUpdateView.as_view(),
          name="update_status"),
+    path("revenue/", RevenueView.as_view(), name="order_revenue"),
 
 ]

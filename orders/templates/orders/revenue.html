@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Выручка за смену</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-5">
+  <div class="container">
+    <h2 class="mb-4 text-center">Общая выручка (статус «оплачено»)</h2>
+
+    <div class="alert alert-success text-center">
+      <strong>Итого:</strong> {{ total_revenue }} ₽
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Стол</th>
+          <th>Сумма</th>
+          <th>Дата создания</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in paid_orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.table_number }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-center">Нет оплаченных заказов</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{% url 'order_list' %}" class="btn btn-secondary mt-3">Назад к списку заказов</a>
+  </div>
+</body>
+</html>
