@@ -5,6 +5,9 @@ class Items(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
+    def __str__(self) -> str:
+        return f"{self.name}: {self.price}"
+
 
 class ChoiceStatus(models.IntegerChoices):
     WAITING = 1, "в ожидании"
@@ -22,9 +25,10 @@ class Order(models.Model):
     status = models.IntegerField(choices=ChoiceStatus.choices,
                                  default=ChoiceStatus.WAITING)
 
+    STATUS_CHOICES = ChoiceStatus.choices
+
     def calculate_total(self):
         return sum(item.price for item in self.items.all())
 
-    def save(self, *args, **kwargs):
-        self.total_price = self.calculate_total()
-        super().save(*args, **kwargs)
+    def __str__(self) -> str:
+        return f"{self.table_number}: {self.total_price}"
