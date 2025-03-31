@@ -21,7 +21,7 @@ services:
          sh -c "python manage.py migrate &&
          python manage.py create_item_mocks &&
          python manage.py create_order_mocks &&
-         python manage.py runserver 0.0.0.0:8000"
+         python manage.py runserver 0.0.0.0:9000"
     volumes:
       - .:/app
     ports:
