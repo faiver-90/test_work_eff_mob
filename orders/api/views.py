@@ -1,6 +1,7 @@
 from django.http import Http404
 from rest_framework import viewsets, filters, status
 from rest_framework.exceptions import APIException
+from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Sum, ProtectedError, Q
@@ -54,15 +55,14 @@ class RevenueAPIView(APIView):
 
 
 class PracticeHandler(APIView):
-    def get(self, request):
-        orders = Order.objects.filter(
-            Q(status=ChoiceStatus.WAITING)
-            |
-            Q(status=ChoiceStatus.PAID)
-        )
-        serializer = OrderSerializer(orders,
-                                     many=True
-                                     )
+    def get(self, request: Request):
+        status = request.query_params.get('status')
+
+        orders = Order.objects.all()
+        if status is not None:
+            orders = orders.filter(status=status)
+
+        serializer = OrderSerializer(orders, many=True)
         return Response({'all': serializer.data})
 
     def post(self, request):
