@@ -3,9 +3,9 @@ from rest_framework import viewsets, filters, status
 from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.db.models import Sum, ProtectedError
+from django.db.models import Sum, ProtectedError, Q
 
-from orders.models import Order
+from orders.models import Order, ChoiceStatus
 from .serializers import OrderSerializer
 
 
@@ -51,3 +51,35 @@ class RevenueAPIView(APIView):
         except Exception:
             return Response({'error': 'Не удалось рассчитать выручку'},
                             status=500)
+
+
+class PracticeHandler(APIView):
+    def get(self, request):
+        orders = Order.objects.filter(
+            Q(status=ChoiceStatus.WAITING)
+            |
+            Q(status=ChoiceStatus.PAID)
+        )
+        serializer = OrderSerializer(orders,
+                                     many=True
+                                     )
+        return Response({'all': serializer.data})
+
+    def post(self, request):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        try:
+            order = Order.objects.get(pk=pk)
+        except Order.DoesNotExist:
+            return Response({"error": "Заказ не найден"}, status=404)
+
+        serializer = OrderSerializer(order, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
